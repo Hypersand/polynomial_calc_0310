@@ -1,32 +1,56 @@
 package com.ll;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class Calc {
 
     public static int run(String exp) {
+        if (!exp.contains(" ")) return Integer.parseInt(exp);
 
-        boolean needToPlus = exp.contains("+");
-        boolean needToMinus = exp.contains("-");
+        boolean hasBracket = exp.contains("(") && exp.contains(")");
+        boolean needToMulti = exp.contains(" * ");
+        boolean needToPlus = exp.contains(" + ") || exp.contains(" - ");
+        boolean needToCompound = needToMulti && needToPlus;
 
-        String[] bits = null;
-
-        if (needToPlus) {
-            bits = exp.split(" \\+ ");
-        } else if (needToMinus) {
-            bits = exp.split(" \\- ");
+        if (hasBracket) {
+            exp = exp.substring(1, exp.length() - 1);
         }
 
-        int a = Integer.parseInt(bits[0]);
-        int b = Integer.parseInt(bits[1]);
+        if (needToCompound) {
+            String newExp = "";
+            String[] bits = exp.split(" \\+ ");
+            for (String bit : bits) {
+                newExp += run(bit) + " + ";
+            }
+
+            return run(newExp);
+        }
 
         if (needToPlus) {
+            exp = exp.replaceAll("- ", "+ -");
+
+            String[] bits = exp.split(" \\+ ");
+
             int sum = 0;
-            for (String bit : bits) {
-                sum += Integer.parseInt(bit);
+
+            for (int i = 0; i < bits.length; i++) {
+                sum += Integer.parseInt(bits[i]);
             }
+
             return sum;
         }
-        if (needToMinus) {
-            return a - b;
+
+        if (needToMulti) {
+            String[] bits = exp.split(" \\* ");
+
+            int sum = 1;
+
+            for (int i = 0; i < bits.length; i++) {
+                sum *= Integer.parseInt(bits[i]);
+            }
+
+            return sum;
         }
 
         throw new RuntimeException("올바른 계산식이 아닙니다.");

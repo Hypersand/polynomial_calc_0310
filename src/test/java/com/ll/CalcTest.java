@@ -1,6 +1,5 @@
 package com.ll;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -54,4 +53,48 @@ public class CalcTest {
     void t8() {
         assertThat(Calc.run("10 + 20 + 30")).isEqualTo(60);
     }
+
+    @Test
+    @DisplayName("10 - 20 + 30 == 20")
+    void t9() {
+        assertThat(Calc.run("10 - 20 + 30")).isEqualTo(20);
+    }
+
+    @Test
+    @DisplayName("10 - 10 - 10 - 10 == -20")
+    void t10() {
+        assertThat(Calc.run("10 - 10 - 10 - 10")).isEqualTo(-20);
+    }
+
+    @Test
+    @DisplayName("10 - 10 - 10 - 10 + 10 + 10 - 10 == -10")
+    void t11() {
+        assertThat(Calc.run("10 - 10 - 10 - 10 + 10 + 10 - 10")).isEqualTo(-10);
+    }
+
+    @Test
+    @DisplayName("10 + 5 * 2 = 20")
+    void t12() {
+        assertThat(Calc.run("10 + 5 * 2")).isEqualTo(20);
+    }
+
+    @Test
+    @DisplayName("20 + 10 + 5 * 2 = 40")
+    void t13() {
+        assertThat(Calc.run("20 + 10 + 5 * 2")).isEqualTo(40);
+    }
+
+    @Test
+    @DisplayName("10 * 20 + 10 + 5 * 2 = 220")
+    void t14() {
+        assertThat(Calc.run("10 * 20 + 10 + 5 * 2")).isEqualTo(220);
+    }
+
+    @Test
+    @DisplayName("(10 + 20) = 30")
+    void t15() {
+        assertThat(Calc.run("(10 + 20)")).isEqualTo(30);
+    }
+
+
 }
