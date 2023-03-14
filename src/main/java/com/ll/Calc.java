@@ -1,20 +1,39 @@
 package com.ll;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 public class Calc {
 
     public static int run(String exp) {
         if (!exp.contains(" ")) return Integer.parseInt(exp);
 
-        boolean hasBracket = exp.contains("(") && exp.contains(")");
         boolean needToMulti = exp.contains(" * ");
         boolean needToPlus = exp.contains(" + ") || exp.contains(" - ");
         boolean needToCompound = needToMulti && needToPlus;
 
-        if (hasBracket) {
-            exp = exp.substring(1, exp.length() - 1);
+        if (hasBracket(exp)) {
+            int start = 0;
+            int end = 0;
+
+            for (int i = 0; i < exp.length(); i++) {
+                if (exp.charAt(i) == '(') {
+                    start = i;
+                    continue;
+                }
+                if (exp.charAt(i) == ')') {
+                    end = i;
+                    break;
+                }
+            }
+            String subExp1 = exp.substring(0, start + 1);
+            String subExp2 = exp.substring(start + 1, end);
+            String subExp3 = exp.substring(end, exp.length());
+
+            if (subExp3.contains("+")) {
+                exp = subExp2 + subExp3.substring(1, subExp3.length());
+                return run(exp);
+            }
+
+            exp = subExp2;
+            return run(exp);
         }
 
         if (needToCompound) {
@@ -54,6 +73,10 @@ public class Calc {
         }
 
         throw new RuntimeException("올바른 계산식이 아닙니다.");
+    }
+
+    private static boolean hasBracket(String exp) {
+        return exp.contains("(") && exp.contains(")");
     }
 
 }
