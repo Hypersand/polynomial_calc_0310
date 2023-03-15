@@ -27,6 +27,14 @@ public class Calc {
             String subExp2 = exp.substring(start + 1, end);
             String subExp3 = exp.substring(end, exp.length());
 
+            if (end == exp.length() - 1) {
+                if (subExp1.contains("+") || subExp1.contains("*")) {
+                    exp = subExp1.substring(0,subExp1.length()-1) + run(subExp2);
+                    return run(exp);
+                }
+
+            }
+
             if (subExp3.contains("+")||subExp3.contains("*")) {
                 exp = run(subExp2) + subExp3.substring(1, subExp3.length());
                 return run(exp);
