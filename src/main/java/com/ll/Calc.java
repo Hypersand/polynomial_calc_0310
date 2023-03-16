@@ -3,7 +3,9 @@ package com.ll;
 public class Calc {
 
     public static int run(String exp) {
-        if (!exp.contains(" ")) return Integer.parseInt(exp);
+        if (!exp.contains(" ")) {
+            return Integer.parseInt(exp);
+        }
 
         boolean needToMulti = exp.contains(" * ");
         boolean needToPlus = exp.contains(" + ") || exp.contains(" - ");
@@ -26,6 +28,12 @@ public class Calc {
             String subExp1 = exp.substring(0, start + 1);
             String subExp2 = exp.substring(start + 1, end);
             String subExp3 = exp.substring(end, exp.length());
+            System.out.println(subExp1);
+            System.out.println(subExp2);
+
+            if (subExp1.contains("-")) {
+                return run("-" + run(subExp2));
+            }
 
             if (end == exp.length() - 1) {
                 if (subExp1.contains("+") || subExp1.contains("*")) {
